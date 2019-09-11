@@ -28,7 +28,7 @@ object Utils {
         val inputStream = BufferedInputStream(url.openConnection().getInputStream())
 
         // Scale Bitmap to Screen Size to store in Cache
-        return scaleBitmap(inputStream, ImageLoader.screenWidth, ImageLoader.screenHeight)
+        return scaleBitmap(inputStream, 100, 100)
     }
 
     fun scaleBitmapForLoad(bitmap: Bitmap, width: Int, height: Int): Bitmap? {
