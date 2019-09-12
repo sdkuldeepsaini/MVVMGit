@@ -24,7 +24,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class ListFragment : Fragment() {
-    lateinit  var activityRecycleBinding: com.dmi.topgit.databinding.ActivityRecycleBinding
+    lateinit var activityRecycleBinding: com.dmi.topgit.databinding.ActivityRecycleBinding
 
     companion object {
         fun newInstance() = ListFragment()
@@ -36,40 +36,36 @@ class ListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        activityRecycleBinding= DataBindingUtil.inflate(inflater,R.layout.activity_recycle,container,false)
+        activityRecycleBinding = DataBindingUtil.inflate(inflater, R.layout.activity_recycle, container, false)
         return activityRecycleBinding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(ListViewModel::class.java)
-        var   layoutManager= LinearLayoutManager(context)
+        viewModel = activity?.run { ViewModelProviders.of(this).get(ListViewModel::class.java) }!!
+        var layoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = layoutManager
         recyclerView.hasFixedSize()
 
-        viewModel.gitHubData.observe(this,object : Observer<JsonArray> {
+        viewModel.gitHubData.observe(this, object : Observer<JsonArray> {
             override fun onChanged(t: JsonArray?) {
-                val gson= Gson()
+                val gson = Gson()
                 val type6 = object : TypeToken<ArrayList<GitModel>>() {}.type
 
-                if (t!=null)
-                {
+                if (t != null) {
                     val user = gson.fromJson(t.toString(), type6) as ArrayList<GitModel>
 
 
 
 
-                        recyclerView.apply {
+                    recyclerView.apply {
 
 
-                            recyclerView.adapter = ItemAdapter(user, context!!)
-                            recyclerView.addItemDecoration(DividerItemDecoration(context, layoutManager.orientation))
-                            activityRecycleBinding.recycleViewModel=viewModel
+                        recyclerView.adapter = ItemAdapter(viewModel, user, context!!)
+                        recyclerView.addItemDecoration(DividerItemDecoration(context, layoutManager.orientation))
+                        activityRecycleBinding.recycleViewModel = viewModel
 
-                        }
-
-
-
+                    }
 
 
                 }

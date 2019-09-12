@@ -1,13 +1,24 @@
 package com.dmi.topgit.view
 
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.DividerItemDecoration
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
 import com.dmi.topgit.R
+import com.dmi.topgit.adapter.ItemAdapter
+import com.dmi.topgit.model.GitModel
+import com.dmi.topgit.viewmodel.ListViewModel
+import com.google.gson.Gson
+import com.google.gson.JsonArray
+import com.google.gson.reflect.TypeToken
+import kotlinx.android.synthetic.main.activity_recycle.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,13 +35,12 @@ class DetailFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    lateinit var actvityDetailBinding: com.dmi.topgit.databinding.ActivityDetailBinding
+    lateinit var detailViewModel:ListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
     }
 
     override fun onCreateView(
@@ -38,7 +48,21 @@ class DetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detail, container, false)
+        actvityDetailBinding= DataBindingUtil.inflate(inflater,R.layout.activity_detail,container,false)
+        return actvityDetailBinding.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        detailViewModel= activity?.run {ViewModelProviders.of(this).get(ListViewModel::class.java)}!!
+
+        //get obserable data here
+        detailViewModel.userShare.observe(this,
+            Observer<GitModel> {
+                    t -> actvityDetailBinding.item = t
+            })
+
     }
 
 

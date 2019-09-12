@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
 
         /*
         ******************************************************
-        * Check if instance is null
+        * Check if instance is null and add List Fragment
         * ****************************************************
         */
         if (savedInstanceState==null)
@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
                 ft.commit()
         }
 
-        viewModel.userShare.
+
 
 
     }

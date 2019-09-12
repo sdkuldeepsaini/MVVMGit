@@ -23,6 +23,8 @@ object WebRepo {
 
     fun getData()
     {
+        //You can handle network connection here
+
         observable=  newsApi.getUserList("java","weekly")
         compositeDisposable.add(observable
             .subscribeOn(Schedulers.io())
