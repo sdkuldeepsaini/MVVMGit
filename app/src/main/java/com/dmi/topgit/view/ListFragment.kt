@@ -1,7 +1,9 @@
 package com.dmi.topgit.view
 
 import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -10,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.dmi.topgit.MainApplication
 
 import com.dmi.topgit.R
 import com.dmi.topgit.adapter.ItemAdapter
@@ -19,12 +22,21 @@ import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
+import dagger.android.AndroidInjection
+import dagger.android.AndroidInjector
+import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.activity_recycle.*
 import java.util.*
+import javax.inject.Inject
 import kotlin.collections.ArrayList
 
-class ListFragment : Fragment() {
+
+
+
+class ListFragment : DaggerFragment() {
     lateinit var activityRecycleBinding: com.dmi.topgit.databinding.ActivityRecycleBinding
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     companion object {
         fun newInstance() = ListFragment()
@@ -40,9 +52,20 @@ class ListFragment : Fragment() {
         return activityRecycleBinding.root
     }
 
+    override fun onAttach(context: Context?) {
+
+
+        super.onAttach(context)
+
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = activity?.run { ViewModelProviders.of(this).get(ListViewModel::class.java) }!!
+
+
+        viewModel = activity?.run { ViewModelProviders.of(this,viewModelFactory).get(ListViewModel::class.java) }!!
+
+
         var layoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = layoutManager
         recyclerView.hasFixedSize()

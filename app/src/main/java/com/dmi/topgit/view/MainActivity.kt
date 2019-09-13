@@ -3,8 +3,10 @@ package com.dmi.topgit.view
 import android.arch.lifecycle.ViewModelProviders
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.dmi.topgit.MainApplication
 import com.dmi.topgit.R
 import com.dmi.topgit.viewmodel.ListViewModel
+import dagger.android.support.DaggerAppCompatActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: ListViewModel
@@ -12,7 +14,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        viewModel = ViewModelProviders.of(this).get(ListViewModel::class.java)
+
 
         /*
         ******************************************************

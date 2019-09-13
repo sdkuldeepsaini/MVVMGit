@@ -1,24 +1,31 @@
 package com.dmi.finance.model.webservice
 
-import android.util.Log
+
+import com.dmi.topgit.MainApplication
+import com.dmi.topgit.di.ApiModule
 import com.google.gson.JsonArray
-import com.google.gson.JsonObject
+
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
 
-object WebRepo {
+class WebRepo @Inject constructor(private val apiModule: ApiModule) {
 
     private  var newsApi: WebService
     private lateinit var serviceResponse: ServiceResponse
     lateinit  var observable: Observable<JsonArray>
-    val compositeDisposable= CompositeDisposable()
+    private val compositeDisposable=apiModule.providesCompositeDisposable()
+    private val application=apiModule.providesMainApplication()
+    private  val okHttpCache=apiModule.provideHttpCache(application.applicationContext)
+    private  val okHttpClient=apiModule.provideOkhttpClient(okHttpCache,application)
+    private val retrofit=apiModule.provideRetrofit(okHttpClient)
 
     init {
-        newsApi = RetrofitService.cteateService(WebService::class.java)
+
+        newsApi = cteateService(WebService::class.java)
     }
 
     fun getData()
@@ -59,6 +66,9 @@ object WebRepo {
         fun onSuccess(jsonObject: JsonArray)
         fun onFailure()
 
+    }
+    fun <S> cteateService(serviceClass: Class<S>): S {
+        return retrofit.create(serviceClass)
     }
 
 

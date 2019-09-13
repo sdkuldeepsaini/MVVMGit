@@ -6,14 +6,14 @@ import android.net.NetworkInfo
 import com.dmi.topgit.MainApplication
 import okhttp3.Cache
 import okhttp3.OkHttpClient
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+
 
 
 object RetrofitService {
 
-    val cacheSize = (5 * 1024 * 1024).toLong()
+
+
+    /*val cacheSize = (5 * 1024 * 1024).toLong()
     val myCache = Cache(MainApplication.applicationContext().cacheDir, cacheSize)
 
     val okHttpClient = OkHttpClient.Builder()
@@ -29,16 +29,16 @@ object RetrofitService {
         .build()
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://github-trending-api.now.sh")
+        .baseUrl("https://github-trending-api.now.sh")  //You can Get from JNI for security reason
         .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .client(okHttpClient)
-        .build()
+        .build()   // singleton without Dagger
 
 
     fun <S> cteateService(serviceClass: Class<S>): S {
         return retrofit.create(serviceClass)
-    }
+    }*/  // Without dagger
 
     fun hasNetwork(context: Context): Boolean? {
         var isConnected: Boolean? = false // Initial Value

@@ -1,31 +1,39 @@
 package com.dmi.topgit
 
-import android.app.Application
 import android.content.Context
+import com.dmi.finance.model.webservice.WebRepo
+import com.dmi.topgit.di.DaggerApiComponent
+
+import dagger.android.*
+
+import javax.inject.Inject
+
 
 /**
  * Created by Kuldeep Saini on 11-09-2019.
  */
-class MainApplication : Application() {
+class MainApplication : DaggerApplication() {
+  //  @Inject lateinit var webRepo: WebRepo
 
-    init {
-        instance = this
-    }
+    override fun applicationInjector(): AndroidInjector<MainApplication> {
+        return DaggerApiComponent.builder().build()
 
-    companion object {
-        private var instance: MainApplication? = null
-
-        fun applicationContext() : Context {
-            return instance!!.applicationContext
-        }
     }
 
     override fun onCreate() {
         super.onCreate()
-        // initialize for any
+        instance = this
 
-        // Use ApplicationContext.
-        // example: SharedPreferences etc...
-        val context: Context = MainApplication.applicationContext()
     }
+
+    companion object {
+        lateinit var instance: MainApplication
+            private fun getContext():Context{
+                return  instance.applicationContext
+            }
+
+    }
+  //
+
+
 }
